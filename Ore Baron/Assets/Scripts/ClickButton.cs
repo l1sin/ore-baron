@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private Animator _animator;
+    public Animator Animator;
+    public int OreIndex;
+    public BigNumber OrePerClick;
     public void OnPointerDown(PointerEventData eventData)
     {
-        _animator.Play("OnPointerDown");
+        Animator.Play("OnPointerDown");
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        _animator.Play("OnPointerUp");
+        Animator.Play("OnPointerUp");
+        GameController.Instance.AddOre(OreIndex, OrePerClick);
     }
 }
