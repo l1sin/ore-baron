@@ -1,7 +1,8 @@
 using System;
+using System.Collections;
 
 [Serializable]
-public struct BigNumber
+public struct BigNumber: IEquatable<BigNumber>, IComparable<BigNumber>
 {
     public int[] N;
     public int this[int index]
@@ -72,6 +73,40 @@ public struct BigNumber
         }
         this = temp;
         return temp;
+    }
+
+    public BigNumber Power(int power)
+    {
+        BigNumber temp = new BigNumber(10);
+        temp = this;
+        for (int i = 0; i < power - 1; i++)
+        {
+            temp *= this;
+        }
+        this = temp;
+        return temp;
+    }
+
+    public bool Equals(BigNumber other)
+    {
+        if (N.Length != other.N.Length) return false;
+        for (int i = 0; i < N.Length; i++)
+        {
+            if (N[i] == N[i]) continue;
+            else return false;
+        }
+        return true;
+    }
+
+    public int CompareTo(BigNumber other)
+    {
+        if (N.Length != other.N.Length) return 0;
+        for (int i = N.Length - 1; i >= 0; i--)
+        {
+            if (N[i] > other.N[i]) return 1;
+            else if (N[i] < other.N[i]) return -1;
+        }
+        return 0;
     }
 
     public static BigNumber operator +(BigNumber a, BigNumber b)
