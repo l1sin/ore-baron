@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,9 +14,9 @@ public class GameController : MonoBehaviour
     public List<OreType> Ores;
     public List<OreInfo> OreInfos;
     public List<MineInfo> MineInfos;
+    public List<MineUpgradeInfo> MineUpgradeInfos;
     public GameObject OreInfoPrefab;
     public GameObject OreMenuContent;
-    public List<Button> BuyButtons;
 
     // Mines.
     public List<MineType> Mines;
@@ -24,6 +25,28 @@ public class GameController : MonoBehaviour
     private float _tickTime = 1f;
 
     public static GameController Instance;
+
+    // Premium.
+    public bool PremiumDoubleMine;
+    public bool PremiumDoubleClick;
+    public bool Payed;
+
+    public int PremiumMineBonus;
+    public int PremiumClickBonus;
+
+    // Ads.
+    public bool AdDoubleMine;
+    public bool AdDoubleClick;
+
+    public int AdMineBonus;
+    public int AdClickBonus;
+
+    public float MineAdTime = 60f;
+
+    public float ClickAdTime = 60f;
+
+    public Button MineAdButton;
+    public Button ClickAdButton;
 
     private void Start()
     {
@@ -36,11 +59,18 @@ public class GameController : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+        SetPremium(false);
+        SetAd(false);
         UpdateAllOres();
-        SetMinesPrices();
+        SetAllMinePrices();
+        SetAllMineUpgradePrices();
         UpdateAllMines();
+        UpdateAllMineUpgrades();
+        SetAllMineIncome();
         UpdateMoney();
         _tickTimer = _tickTime;
+
+
     }
 
     public void Update()
@@ -51,16 +81,132 @@ public class GameController : MonoBehaviour
             Tick();
             _tickTimer = _tickTime;
         }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (PremiumDoubleMine) PremiumDoubleMine = false;
+            else PremiumDoubleMine = true;
+            SetPremium(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (PremiumDoubleClick) PremiumDoubleClick = false;
+            else PremiumDoubleClick = true;
+            SetPremium(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (AdDoubleMine) AdDoubleMine = false;
+            else AdDoubleMine = true;
+            SetAd(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            if (AdDoubleClick) AdDoubleClick = false;
+            else AdDoubleClick = true;
+            SetAd(true);
+        }
+#endif
     }
 
-    public void SetMinesPrices()
+    public IEnumerator DropMineAd()
+    {
+        yield return new WaitForSeconds(MineAdTime);
+        ToggleMineAdBonus(false);
+    }
+    public IEnumerator DropClickAd()
+    {
+        yield return new WaitForSeconds(ClickAdTime);
+        ToggleClickAdBonus(false);
+    }
+
+    public void BuyPremiumMine()
+    {
+        PremiumDoubleMine = true;
+        Payed = true;
+        SetPremium(true);
+    }
+    public void BuyPremiumClick ()
+    {
+        PremiumDoubleClick = true;
+        Payed = true;
+        SetPremium(true);
+    }
+
+    public void ToggleMineAdBonus(bool state)
+    {
+        if (state)
+        {
+            AdDoubleMine = true;
+            SetAd(true);
+            MineAdButton.interactable = false;
+            StartCoroutine(DropMineAd());
+        }
+        else
+        {
+            AdDoubleMine = false;
+            SetAd(true);
+            MineAdButton.interactable = true;
+        }
+    }
+    public void ToggleClickAdBonus(bool state)
+    {
+        if (state)
+        {
+            AdDoubleClick = true;
+            SetAd(true);
+            ClickAdButton.interactable = false;
+            StartCoroutine(DropClickAd());
+        }
+        else
+        {
+            AdDoubleClick = false;
+            SetAd(true);
+            ClickAdButton.interactable = true;
+        }
+    }
+    public void SetPremium(bool updateValues)
+    {
+        if (PremiumDoubleMine) PremiumMineBonus = 2;
+        else PremiumMineBonus = 1;
+
+        if (PremiumDoubleClick) PremiumClickBonus = 2;
+        else PremiumClickBonus = 1;
+
+        if (updateValues)
+        {
+            SetAllMineIncome();
+            UpdateAllMines();
+        }
+    }
+    public void SetAd(bool updateValues)
+    {
+        if (AdDoubleMine) AdMineBonus = 2;
+        else AdMineBonus = 1;
+
+        if (AdDoubleClick) AdClickBonus = 2;
+        else AdClickBonus = 1;
+
+        if (updateValues)
+        {
+            SetAllMineIncome();
+            UpdateAllMines();
+        }
+    }
+    public void SetAllMinePrices()
     {
         for (int i = 0; i < Mines.Count; i++)
         {
-            Mines[i].CurrentMinesPrice = Mines[i].MinesPrice * Mathf.FloorToInt(Mathf.Pow(1.6f, Mines[i].MinesAmount));
+            SetMinePrice(i);
         }
     }
-
+    public void SetAllMineUpgradePrices()
+    {
+        for (int i = 0; i < Mines.Count; i++)
+        {
+            SetMineUpgradePrice(i);
+        }
+    }
     public void Tick()
     {
         for (int i = 0; i < Mines.Count; i++)
@@ -115,10 +261,41 @@ public class GameController : MonoBehaviour
         OreInfos[i].PriceText.text = $"Price: {Ores[i].Price} $/pcs ";
     }
 
+    public void UpdateAllMineUpgrades()
+    {
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            UpdateMineUpgrade(i);
+        }
+    }
+    public void UpdateMineUpgrade(int i)
+    {
+        MineUpgradeInfos[i].Icon.sprite = Ores[i].Icon;
+        MineUpgradeInfos[i].NameText.text = Ores[i].Name + " mine upgrade";
+        MineUpgradeInfos[i].AmountText.text = $"Amount: {Mines[i].MinesUpgrades} pcs";
+        MineUpgradeInfos[i].PriceText.text = $"Price: {Mines[i].CurrentUpgradeMinesPrice} $/pcs ";
+    }
+
+    public void UpdateBuyMineUpgradeButtons()
+    {
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            if (Money.CompareTo(Mines[i].CurrentUpgradeMinesPrice) == -1)
+            {
+                MineUpgradeInfos[i].BuyButton.interactable = false;
+            }
+            else
+            {
+                MineUpgradeInfos[i].BuyButton.interactable = true;
+            }
+        }
+    }
+
     public void UpdateMoney()
     {
         MoneyText.text = Money.ToString();
         UpdateBuyMinesButtons();
+        UpdateBuyMineUpgradeButtons();
     }
     
 
@@ -154,9 +331,49 @@ public class GameController : MonoBehaviour
     {
         Money -= Mines[oreIndex].CurrentMinesPrice;
         Mines[oreIndex].MinesAmount++;
-        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * (int)Mathf.Pow(Mines[oreIndex].MinesAmount, 2);
+        SetMinePrice(oreIndex);
         UpdateMine(oreIndex);
         UpdateMoney();
+        Unlock(oreIndex);
+    }
+    public void SetMinePrice(int oreIndex)
+    {
+        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * (int)Mathf.Pow(Mines[oreIndex].MinesAmount + 1, 2.5f);
+    }
+
+    public void BuyMineUpgrade(int oreIndex)
+    {
+        Money -= Mines[oreIndex].CurrentUpgradeMinesPrice;
+        Mines[oreIndex].MinesUpgrades++;
+        SetMineIncome(oreIndex);
+        SetMineUpgradePrice(oreIndex);
+        UpdateMineUpgrade(oreIndex);
+        UpdateMine(oreIndex);
+        UpdateMoney();
+    }
+
+    public void SetMineIncome(int oreIndex)
+    {
+        Mines[oreIndex].MinesIncome = (MineType.BaseIncome + MineType.BaseIncome * Mines[oreIndex].MinesUpgrades) * PremiumMineBonus * AdMineBonus;
+    }
+    public void SetAllMineIncome()
+    {
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            SetMineIncome(i);
+        }
+    }
+    public void SetMineUpgradePrice(int oreIndex)
+    {
+        Mines[oreIndex].CurrentUpgradeMinesPrice = Mines[oreIndex].MineUpgradePrice * (int)Mathf.Pow(Mines[oreIndex].MinesUpgrades + 1, 2.5f);
+    }
+
+    public void Unlock(int oreIndex)
+    {
+        OreInfos[oreIndex].Unlock();
+        MineUpgradeInfos[oreIndex].Unlock();
+        if (oreIndex + 1 < Ores.Count) MineInfos[oreIndex + 1].Unlock();
+
     }
 
 
@@ -172,9 +389,13 @@ public class GameController : MonoBehaviour
     [Serializable]
     public class MineType
     {
+        public static int BaseIncome = 3;
+        public int MinesUpgrades;
         public int MinesAmount;
         public int MinesIncome;
         public BigNumber MinesPrice;
         public BigNumber CurrentMinesPrice;
+        public BigNumber MineUpgradePrice;
+        public BigNumber CurrentUpgradeMinesPrice;
     }
 }

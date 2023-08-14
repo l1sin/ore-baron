@@ -1,15 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Collections.AllocatorManager;
 
-public class MineInfo : MonoBehaviour
+public class MineUpgradeInfo : MonoBehaviour
 {
     public Image Icon;
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI AmountText;
     public TextMeshProUGUI PriceText;
-    public TextMeshProUGUI IncomeTotal;
     public Button BuyButton;
     public int OreIndex;
     public GameObject Lock;
@@ -25,8 +25,9 @@ public class MineInfo : MonoBehaviour
 
     public void BuyMine()
     {
-        GameController.Instance.BuyMine(OreIndex);
+        GameController.Instance.BuyMineUpgrade(OreIndex);
     }
+
     public void Unlock()
     {
         Lock.SetActive(false);

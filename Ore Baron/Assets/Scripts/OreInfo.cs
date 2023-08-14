@@ -12,6 +12,7 @@ public class OreInfo : MonoBehaviour
     public Button SellButton;
     public Button ChangeOreButton;
     public int OreIndex;
+    public GameObject Lock;
 
     public void OnEnable()
     {
@@ -33,5 +34,10 @@ public class OreInfo : MonoBehaviour
     {
         ClickButton.Instance.OreIndex = OreIndex;
         ClickButton.Instance.Image.sprite = Icon.sprite;
+    }
+
+    public void Unlock()
+    {
+        Lock.SetActive(false);
     }
 }
