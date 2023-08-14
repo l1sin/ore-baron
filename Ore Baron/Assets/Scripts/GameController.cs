@@ -59,6 +59,7 @@ public class GameController : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+        CalculatePrice();
         SetPremium(false);
         SetAd(false);
         UpdateAllOres();
@@ -69,8 +70,6 @@ public class GameController : MonoBehaviour
         SetAllMineIncome();
         UpdateMoney();
         _tickTimer = _tickTime;
-
-
     }
 
     public void Update()
@@ -338,7 +337,7 @@ public class GameController : MonoBehaviour
     }
     public void SetMinePrice(int oreIndex)
     {
-        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * (int)Mathf.Pow(Mines[oreIndex].MinesAmount + 1, 2.5f);
+        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * ((int)Mathf.Pow(1.20f, Mines[oreIndex].MinesAmount));
     }
 
     public void BuyMineUpgrade(int oreIndex)
@@ -365,7 +364,7 @@ public class GameController : MonoBehaviour
     }
     public void SetMineUpgradePrice(int oreIndex)
     {
-        Mines[oreIndex].CurrentUpgradeMinesPrice = Mines[oreIndex].MineUpgradePrice * (int)Mathf.Pow(Mines[oreIndex].MinesUpgrades + 1, 2.5f);
+        Mines[oreIndex].CurrentUpgradeMinesPrice = Mines[oreIndex].MineUpgradePrice * ((int)Mathf.Pow(1.20f, Mines[oreIndex].MinesUpgrades));
     }
 
     public void Unlock(int oreIndex)
@@ -374,6 +373,18 @@ public class GameController : MonoBehaviour
         MineUpgradeInfos[oreIndex].Unlock();
         if (oreIndex + 1 < Ores.Count) MineInfos[oreIndex + 1].Unlock();
 
+    }
+
+    public void CalculatePrice()
+    {
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            Mines[i].MinesPrice = Ores[i].Price * (10 + i * (90 + 10 * i)); 
+        }
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            Mines[i].MineUpgradePrice = Ores[i].Price * (50 + i * (150 + 10 * i));
+        }
     }
 
 
