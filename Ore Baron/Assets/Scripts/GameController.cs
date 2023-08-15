@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +18,7 @@ public class GameController : MonoBehaviour
     public List<MineUpgradeInfo> MineUpgradeInfos;
     public GameObject OreInfoPrefab;
     public GameObject OreMenuContent;
+    public List<Sprite> OreSprites;
 
     // Mines.
     public List<MineType> Mines;
@@ -62,6 +62,9 @@ public class GameController : MonoBehaviour
     public GameObject WinMenu;
     public bool WinGame;
 
+    public bool Load;
+    public bool Save;
+
     private void Start()
     {
         if (Instance != null && Instance != this)
@@ -72,6 +75,11 @@ public class GameController : MonoBehaviour
         {
             Instance = this;
         }
+        if (File.Exists($"{Application.dataPath}/save.json") && Load)
+        {
+            string json = File.ReadAllText($"{Application.dataPath}/save.json");
+            LoadGame(json);
+        } 
         DontDestroyOnLoad(gameObject);
         CalculatePrice();
         SetPremium(false);
@@ -84,6 +92,7 @@ public class GameController : MonoBehaviour
         SetAllMineIncome();
         UpdateMoney();
         UpdateEarthInfo();
+        UnlockOnLoad();
         _tickTimer = _tickTime;
     }
 
@@ -250,7 +259,7 @@ public class GameController : MonoBehaviour
         {
             AddOre(i, new BigNumber(0, Mines[i].MinesIncome * Mines[i].MinesAmount));
         }
-        SaveGame();
+        if (Save) SaveGame();
     }
 
     public void UpdateAllMines()
@@ -428,11 +437,20 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void UnlockOnLoad()
+    {
+        for (int i = 0; i < Mines.Count; i++)
+        {
+            if (Mines[i].MinesAmount > 0) Unlock(i);
+        }
+    }
+
     public void CalculatePrice()
     {
         for (int i = 0; i < Ores.Count; i++)
         {
             Ores[i].Price = new BigNumber(0, 1) * new BigNumber(0, 5).Power(i);
+            Ores[i].Icon = OreSprites[i];
         }
         for (int i = 0; i < Ores.Count; i++)
         {
@@ -483,6 +501,19 @@ public class GameController : MonoBehaviour
         return json;
     }
 
+    public void LoadGame(string json)
+    {
+        SaveFile save = JsonUtility.FromJson<SaveFile>(json);
+
+        //Money = save.Money;
+        //Ores = save.Ores;
+        //Mines = save.Mines;
+        //PremiumDoubleMine = save.PremiumDoubleMine;
+        //PremiumDoubleClick = save.PremiumDoubleClick;
+        //Payed = save.Payed;
+        //WinGame = save.WinGame;
+    }
+
 
     [Serializable]
     public class OreType
@@ -490,20 +521,20 @@ public class GameController : MonoBehaviour
         [NonSerialized] public Sprite Icon;
         public string Name;
         public BigNumber Amount;
-        public BigNumber Price;
+        [NonSerialized] public BigNumber Price;
     }
 
     [Serializable]
     public class MineType
     {
-        public static int BaseIncome = 3;
+        [NonSerialized] public static int BaseIncome = 3;
         public int MinesUpgrades;
         public int MinesAmount;
-        public int MinesIncome;
+        [NonSerialized] public int MinesIncome;
         [NonSerialized] public BigNumber MinesPrice;
-        public BigNumber CurrentMinesPrice;
+        [NonSerialized] public BigNumber CurrentMinesPrice;
         [NonSerialized] public BigNumber MineUpgradePrice;
-        public BigNumber CurrentUpgradeMinesPrice;
+        [NonSerialized] public BigNumber CurrentUpgradeMinesPrice;
     }
 
     [Serializable]

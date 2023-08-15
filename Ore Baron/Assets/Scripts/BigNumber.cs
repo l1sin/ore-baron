@@ -79,10 +79,22 @@ public struct BigNumber: IEquatable<BigNumber>, IComparable<BigNumber>
     {
         BigNumber temp = new BigNumber(10);
         temp = this;
-        for (int i = 0; i < power - 1; i++)
+        if (power == 0)
         {
-            temp *= this;
+            temp[0] = 1;
         }
+        else if (power == 1)
+        {
+            // Nothing
+        }
+        else
+        {
+            for (int i = 0; i < power - 1; i++)
+            {
+                temp *= this;
+            }
+        }
+        
         this = temp;
         return temp;
     }
