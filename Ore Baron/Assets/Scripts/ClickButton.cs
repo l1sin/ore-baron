@@ -31,5 +31,6 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         Animator.Play("OnPointerUp");
         GameController.Instance.AddOre(OreIndex, GameController.Instance.OrePerClick * GameController.Instance.PremiumClickBonus * GameController.Instance.AdClickBonus);
+        SoundManager.Instance.PlayMineSound();
     }
 }
