@@ -70,7 +70,8 @@ public class GameController : MonoBehaviour
     public enum Language
     {
         en,
-        ru
+        ru,
+        tr
     }
 
     private void Start()
