@@ -65,6 +65,14 @@ public class GameController : MonoBehaviour
     public bool Load;
     public bool Save;
 
+    public Localization Localization;
+    public Language lang;
+    public enum Language
+    {
+        en,
+        ru
+    }
+
     private void Start()
     {
         if (Instance != null && Instance != this)
@@ -81,6 +89,7 @@ public class GameController : MonoBehaviour
             LoadGame(json);
         }
         DontDestroyOnLoad(gameObject);
+        LoadLocalization();
         CalculatePrice();
         SetPremium(false);
         SetAd(false);
@@ -94,6 +103,10 @@ public class GameController : MonoBehaviour
         UpdateEarthInfo();
         UnlockOnLoad();
         _tickTimer = _tickTime;
+
+        Localization en = new Localization();
+        string locjson = JsonUtility.ToJson(en);
+        File.WriteAllText($"{Application.dataPath}/loctemplate.json", locjson);
     }
 
     public void Update()
@@ -130,6 +143,12 @@ public class GameController : MonoBehaviour
             SetAd(true);
         }
 #endif
+    }
+
+    public void LoadLocalization()
+    {
+        TextAsset json = Resources.Load<TextAsset>($"Localization/{lang}");
+        Localization = JsonUtility.FromJson<Localization>(json.text);
     }
 
     public IEnumerator DropMineAd()
@@ -271,15 +290,13 @@ public class GameController : MonoBehaviour
     }
     public void UpdateMine(int i)
     {
-        MineInfos[i].Icon.sprite = Ores[i].Icon;
-        MineInfos[i].NameText.text = Ores[i].Name + " mine";
-        MineInfos[i].AmountText.text = $"Amount: {Mines[i].MinesAmount} pcs";
-        MineInfos[i].PriceText.text = $"Price: {Mines[i].CurrentMinesPrice} $/pcs ";
-        MineInfos[i].IncomeTotal.text = $"Mining: {Mines[i].MinesIncome * Mines[i].MinesAmount} /sec ";
+        MineInfos[i].AmountText.text = $"{Localization.Amount}: {Mines[i].MinesAmount} {Localization.Pcs}";
+        MineInfos[i].PriceText.text = $"{Localization.Price}: {Mines[i].CurrentMinesPrice} $/{Localization.Pcs} ";
+        MineInfos[i].IncomeTotal.text = $"{Localization.Mining}: {Mines[i].MinesIncome * Mines[i].MinesAmount} /{Localization.Sec} ";
         if (Mines[i].MinesAmount >= 25)
         {
             MineInfos[i].Complete();
-            MineInfos[i].PriceText.text = $"Sold";
+            MineInfos[i].PriceText.text = $"{Localization.Sold}";
         }
     }
 
@@ -307,10 +324,8 @@ public class GameController : MonoBehaviour
     }
     public void UpdateOre(int i)
     {
-        OreInfos[i].Icon.sprite = Ores[i].Icon;
-        OreInfos[i].NameText.text = Ores[i].Name;
-        OreInfos[i].AmountText.text = $"Amount: {Ores[i].Amount} pcs";
-        OreInfos[i].PriceText.text = $"Price: {Ores[i].Price} $/pcs ";
+        OreInfos[i].AmountText.text = $"{Localization.Amount}: {Ores[i].Amount} {Localization.Pcs}";
+        OreInfos[i].PriceText.text = $"{Localization.Price}: {Ores[i].Price} $/{Localization.Pcs} ";
     }
 
     public void UpdateAllMineUpgrades()
@@ -322,14 +337,12 @@ public class GameController : MonoBehaviour
     }
     public void UpdateMineUpgrade(int i)
     {
-        MineUpgradeInfos[i].Icon.sprite = Ores[i].Icon;
-        MineUpgradeInfos[i].NameText.text = Ores[i].Name + " mine upgrade";
-        MineUpgradeInfos[i].AmountText.text = $"Amount: {Mines[i].MinesUpgrades} pcs";
-        MineUpgradeInfos[i].PriceText.text = $"Price: {Mines[i].CurrentUpgradeMinesPrice} $/pcs ";
+        MineUpgradeInfos[i].AmountText.text = $"{Localization.Amount}: {Mines[i].MinesUpgrades} {Localization.Pcs}";
+        MineUpgradeInfos[i].PriceText.text = $"{Localization.Price}: {Mines[i].CurrentUpgradeMinesPrice} $/{Localization.Pcs} ";
         if (Mines[i].MinesUpgrades >= 25)
         {
             MineUpgradeInfos[i].Complete();
-            MineUpgradeInfos[i].PriceText.text = $"Sold";
+            MineUpgradeInfos[i].PriceText.text = $"{Localization.Sold}";
         }
     }
 
@@ -360,7 +373,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < Ores.Count; i++)
         {
-            OreInfos[i].AmountText.text = $"Amount: {Ores[i].Amount} pcs";
+            OreInfos[i].AmountText.text = $"{Localization.Amount}: {Ores[i].Amount} {Localization.Pcs}";
         }
     }
 
@@ -451,14 +464,21 @@ public class GameController : MonoBehaviour
         {
             Ores[i].Price = new BigNumber(0, 1) * new BigNumber(0, 5).Power(i);
             Ores[i].Icon = OreSprites[i];
+            Ores[i].Name = Localization.OreNames[i];
+            OreInfos[i].Icon.sprite = Ores[i].Icon;
+            OreInfos[i].NameText.text = Ores[i].Name;
         }
         for (int i = 0; i < Ores.Count; i++)
         {
             Mines[i].MinesPrice = Ores[i].Price * (10 + i * 50);
+            MineInfos[i].Icon.sprite = Ores[i].Icon;
+            MineInfos[i].NameText.text = Localization.MineNames[i];
         }
         for (int i = 0; i < Ores.Count; i++)
         {
             Mines[i].MineUpgradePrice = Ores[i].Price * (50 + i * 70);
+            MineUpgradeInfos[i].Icon.sprite = Ores[i].Icon;
+            MineUpgradeInfos[i].NameText.text = Localization.MineUpgradeNames[i];
         }
         EarthPrice = Mines[Mines.Count - 1].MinesPrice * 50;
     }
@@ -476,11 +496,11 @@ public class GameController : MonoBehaviour
     {
         if (!WinGame)
         {
-            EarthInfo.PriceText.text = $"Price: {EarthPrice} $";
+            EarthInfo.PriceText.text = $"{Localization.Price}: {EarthPrice} $";
         }
         else
         {
-            EarthInfo.PriceText.text = $"Sold";
+            EarthInfo.PriceText.text = $"{Localization.Sold}";
             EarthInfo.Complete();
         }
     }
@@ -520,7 +540,7 @@ public class GameController : MonoBehaviour
     public class OreType
     {
         [NonSerialized] public Sprite Icon;
-        public string Name;
+        [NonSerialized] public string Name;
         public BigNumber Amount;
         [NonSerialized] public BigNumber Price;
     }

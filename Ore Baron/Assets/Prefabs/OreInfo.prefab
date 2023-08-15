@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Stone
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
-  m_sharedMaterial: {fileID: 4073458444948021885, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
+  m_sharedMaterial: {fileID: -972955934162586990, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 24
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -239,8 +239,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
-  m_sharedMaterial: {fileID: 4073458444948021885, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
+  m_sharedMaterial: {fileID: -972955934162586990, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 24
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -553,8 +553,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Price: 1'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
-  m_sharedMaterial: {fileID: 4073458444948021885, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
+  m_sharedMaterial: {fileID: -972955934162586990, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 24
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

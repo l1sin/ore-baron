@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 232692256467958912}
   - component: {fileID: 7665753960917381558}
   - component: {fileID: 497889244754760256}
+  - component: {fileID: 5596636528400553140}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -156,8 +157,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Double Mine Speed
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
-  m_sharedMaterial: {fileID: 4073458444948021885, guid: 7376efe26956a444ea1c26c38940db88, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
+  m_sharedMaterial: {fileID: -972955934162586990, guid: de11dfbd2020fc24d996bf07df3d30b1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 24
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -223,6 +224,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5596636528400553140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050770091495860414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f3ad2b824fd04498a5b02769d56d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TMP: {fileID: 497889244754760256}
+  Text: 
 --- !u!1 &2495152547512294905
 GameObject:
   m_ObjectHideFlags: 0
