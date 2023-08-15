@@ -6,7 +6,6 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public Animator Animator;
     public int OreIndex;
-    public BigNumber OrePerClick;
     public Image Image;
 
     public static ClickButton Instance;
@@ -31,6 +30,6 @@ public class ClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         Animator.Play("OnPointerUp");
-        GameController.Instance.AddOre(OreIndex, OrePerClick * GameController.Instance.PremiumClickBonus * GameController.Instance.AdClickBonus);
+        GameController.Instance.AddOre(OreIndex, GameController.Instance.OrePerClick * GameController.Instance.PremiumClickBonus * GameController.Instance.AdClickBonus);
     }
 }

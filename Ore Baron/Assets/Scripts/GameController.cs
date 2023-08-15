@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -137,12 +139,14 @@ public class GameController : MonoBehaviour
         PremiumDoubleMine = true;
         Payed = true;
         SetPremium(true);
+        SaveGame();
     }
-    public void BuyPremiumClick ()
+    public void BuyPremiumClick()
     {
         PremiumDoubleClick = true;
         Payed = true;
         SetPremium(true);
+        SaveGame();
     }
 
     public void ToggleMineAdBonus(bool state)
@@ -198,13 +202,13 @@ public class GameController : MonoBehaviour
             PremiumClickBonus = 2;
             PremiumClickButtonObject.SetActive(false);
             PremiumClickCompletedIcon.SetActive(true);
-        } 
+        }
         else
         {
             PremiumClickBonus = 1;
             PremiumClickButtonObject.SetActive(true);
             PremiumClickCompletedIcon.SetActive(false);
-        } 
+        }
 
         if (updateValues)
         {
@@ -246,6 +250,7 @@ public class GameController : MonoBehaviour
         {
             AddOre(i, new BigNumber(0, Mines[i].MinesIncome * Mines[i].MinesAmount));
         }
+        SaveGame();
     }
 
     public void UpdateAllMines()
@@ -266,7 +271,7 @@ public class GameController : MonoBehaviour
         {
             MineInfos[i].Complete();
             MineInfos[i].PriceText.text = $"Sold";
-        } 
+        }
     }
 
     public void UpdateBuyMinesButtons()
@@ -340,7 +345,7 @@ public class GameController : MonoBehaviour
         UpdateBuyMinesButtons();
         UpdateBuyMineUpgradeButtons();
     }
-    
+
 
     public void SetOresAmount()
     {
@@ -420,14 +425,18 @@ public class GameController : MonoBehaviour
         {
             EarthInfo.Unlock();
             UpdateEarthInfo();
-        } 
+        }
     }
 
     public void CalculatePrice()
     {
         for (int i = 0; i < Ores.Count; i++)
         {
-            Mines[i].MinesPrice = Ores[i].Price * (10 + i * 50); 
+            Ores[i].Price = new BigNumber(0, 1) * new BigNumber(0, 5).Power(i);
+        }
+        for (int i = 0; i < Ores.Count; i++)
+        {
+            Mines[i].MinesPrice = Ores[i].Price * (10 + i * 50);
         }
         for (int i = 0; i < Ores.Count; i++)
         {
@@ -457,11 +466,28 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public string SaveGame()
+    {
+        SaveFile save = new SaveFile();
+        save.Money = Money;
+        save.Ores = Ores;
+        save.Mines = Mines;
+        save.PremiumDoubleMine = PremiumDoubleMine;
+        save.PremiumDoubleClick = PremiumDoubleClick;
+        save.Payed = Payed;
+        save.WinGame = WinGame;
+
+        string json = JsonUtility.ToJson(save);
+        File.WriteAllText($"{Application.dataPath}/save.json", json);
+
+        return json;
+    }
+
 
     [Serializable]
     public class OreType
     {
-        public Sprite Icon;
+        [NonSerialized] public Sprite Icon;
         public string Name;
         public BigNumber Amount;
         public BigNumber Price;
@@ -474,9 +500,28 @@ public class GameController : MonoBehaviour
         public int MinesUpgrades;
         public int MinesAmount;
         public int MinesIncome;
-        public BigNumber MinesPrice;
+        [NonSerialized] public BigNumber MinesPrice;
         public BigNumber CurrentMinesPrice;
-        public BigNumber MineUpgradePrice;
+        [NonSerialized] public BigNumber MineUpgradePrice;
         public BigNumber CurrentUpgradeMinesPrice;
+    }
+
+    [Serializable]
+    public class SaveFile
+    {
+        // Ores.
+        public BigNumber Money;
+        public List<OreType> Ores;
+
+        // Mines.
+        public List<MineType> Mines;
+
+        // Premium.
+        public bool PremiumDoubleMine;
+        public bool PremiumDoubleClick;
+        public bool Payed;
+
+        // Other.
+        public bool WinGame;
     }
 }
