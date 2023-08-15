@@ -2,31 +2,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MineInfo : MonoBehaviour
+public class EarthInfo : MonoBehaviour
 {
-    public Image Icon;
     public TextMeshProUGUI NameText;
-    public TextMeshProUGUI AmountText;
+    public TextMeshProUGUI DescriptionText;
     public TextMeshProUGUI PriceText;
-    public TextMeshProUGUI IncomeTotal;
     public Button BuyButton;
-    public int OreIndex;
     public GameObject Lock;
     public GameObject CompletedIcon;
     public GameObject ButtonObject;
 
     public void OnEnable()
     {
-        BuyButton.onClick.AddListener(BuyMine);
+        BuyButton.onClick.AddListener(BuyEarth);
     }
     public void OnDisable()
     {
-        BuyButton.onClick.RemoveListener(BuyMine);
+        BuyButton.onClick.RemoveListener(BuyEarth);
     }
 
-    public void BuyMine()
+    public void BuyEarth()
     {
-        GameController.Instance.BuyMine(OreIndex);
+        GameController.Instance.BuyEarth();
     }
     public void Unlock()
     {

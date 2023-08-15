@@ -13,6 +13,8 @@ public class MineUpgradeInfo : MonoBehaviour
     public Button BuyButton;
     public int OreIndex;
     public GameObject Lock;
+    public GameObject CompletedIcon;
+    public GameObject ButtonObject;
 
     public void OnEnable()
     {
@@ -31,5 +33,10 @@ public class MineUpgradeInfo : MonoBehaviour
     public void Unlock()
     {
         Lock.SetActive(false);
+    }
+    public void Complete()
+    {
+        CompletedIcon.SetActive(true);
+        ButtonObject.SetActive(false);
     }
 }

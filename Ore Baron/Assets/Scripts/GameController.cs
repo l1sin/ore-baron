@@ -45,8 +45,20 @@ public class GameController : MonoBehaviour
 
     public float ClickAdTime = 60f;
 
+    // Other.
     public Button MineAdButton;
     public Button ClickAdButton;
+
+    public GameObject PremiumMineButtonObject;
+    public GameObject PremiumClickButtonObject;
+
+    public GameObject PremiumMineCompletedIcon;
+    public GameObject PremiumClickCompletedIcon;
+
+    public EarthInfo EarthInfo;
+    public BigNumber EarthPrice;
+    public GameObject WinMenu;
+    public bool WinGame;
 
     private void Start()
     {
@@ -69,6 +81,7 @@ public class GameController : MonoBehaviour
         UpdateAllMineUpgrades();
         SetAllMineIncome();
         UpdateMoney();
+        UpdateEarthInfo();
         _tickTimer = _tickTime;
     }
 
@@ -166,11 +179,32 @@ public class GameController : MonoBehaviour
     }
     public void SetPremium(bool updateValues)
     {
-        if (PremiumDoubleMine) PremiumMineBonus = 2;
-        else PremiumMineBonus = 1;
+        if (PremiumDoubleMine)
+        {
+            PremiumMineBonus = 2;
+            PremiumMineButtonObject.SetActive(false);
+            PremiumMineCompletedIcon.SetActive(true);
 
-        if (PremiumDoubleClick) PremiumClickBonus = 2;
-        else PremiumClickBonus = 1;
+        }
+        else
+        {
+            PremiumMineBonus = 1;
+            PremiumMineButtonObject.SetActive(true);
+            PremiumMineCompletedIcon.SetActive(false);
+        }
+
+        if (PremiumDoubleClick)
+        {
+            PremiumClickBonus = 2;
+            PremiumClickButtonObject.SetActive(false);
+            PremiumClickCompletedIcon.SetActive(true);
+        } 
+        else
+        {
+            PremiumClickBonus = 1;
+            PremiumClickButtonObject.SetActive(true);
+            PremiumClickCompletedIcon.SetActive(false);
+        } 
 
         if (updateValues)
         {
@@ -228,6 +262,11 @@ public class GameController : MonoBehaviour
         MineInfos[i].AmountText.text = $"Amount: {Mines[i].MinesAmount} pcs";
         MineInfos[i].PriceText.text = $"Price: {Mines[i].CurrentMinesPrice} $/pcs ";
         MineInfos[i].IncomeTotal.text = $"Mining: {Mines[i].MinesIncome * Mines[i].MinesAmount} /sec ";
+        if (Mines[i].MinesAmount >= 25)
+        {
+            MineInfos[i].Complete();
+            MineInfos[i].PriceText.text = $"Sold";
+        } 
     }
 
     public void UpdateBuyMinesButtons()
@@ -273,6 +312,11 @@ public class GameController : MonoBehaviour
         MineUpgradeInfos[i].NameText.text = Ores[i].Name + " mine upgrade";
         MineUpgradeInfos[i].AmountText.text = $"Amount: {Mines[i].MinesUpgrades} pcs";
         MineUpgradeInfos[i].PriceText.text = $"Price: {Mines[i].CurrentUpgradeMinesPrice} $/pcs ";
+        if (Mines[i].MinesUpgrades >= 25)
+        {
+            MineUpgradeInfos[i].Complete();
+            MineUpgradeInfos[i].PriceText.text = $"Sold";
+        }
     }
 
     public void UpdateBuyMineUpgradeButtons()
@@ -337,7 +381,7 @@ public class GameController : MonoBehaviour
     }
     public void SetMinePrice(int oreIndex)
     {
-        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * ((int)Mathf.Pow(1.20f, Mines[oreIndex].MinesAmount));
+        Mines[oreIndex].CurrentMinesPrice = Mines[oreIndex].MinesPrice * ((int)Mathf.Pow(2f, Mines[oreIndex].MinesAmount));
     }
 
     public void BuyMineUpgrade(int oreIndex)
@@ -364,7 +408,7 @@ public class GameController : MonoBehaviour
     }
     public void SetMineUpgradePrice(int oreIndex)
     {
-        Mines[oreIndex].CurrentUpgradeMinesPrice = Mines[oreIndex].MineUpgradePrice * ((int)Mathf.Pow(1.20f, Mines[oreIndex].MinesUpgrades));
+        Mines[oreIndex].CurrentUpgradeMinesPrice = Mines[oreIndex].MineUpgradePrice * ((int)Mathf.Pow(2f, Mines[oreIndex].MinesUpgrades));
     }
 
     public void Unlock(int oreIndex)
@@ -372,18 +416,44 @@ public class GameController : MonoBehaviour
         OreInfos[oreIndex].Unlock();
         MineUpgradeInfos[oreIndex].Unlock();
         if (oreIndex + 1 < Ores.Count) MineInfos[oreIndex + 1].Unlock();
-
+        else
+        {
+            EarthInfo.Unlock();
+            UpdateEarthInfo();
+        } 
     }
 
     public void CalculatePrice()
     {
         for (int i = 0; i < Ores.Count; i++)
         {
-            Mines[i].MinesPrice = Ores[i].Price * (10 + i * (90 + 10 * i)); 
+            Mines[i].MinesPrice = Ores[i].Price * (10 + i * 50); 
         }
         for (int i = 0; i < Ores.Count; i++)
         {
-            Mines[i].MineUpgradePrice = Ores[i].Price * (50 + i * (150 + 10 * i));
+            Mines[i].MineUpgradePrice = Ores[i].Price * (50 + i * 70);
+        }
+        EarthPrice = Mines[Mines.Count - 1].MinesPrice * 50;
+    }
+
+    public void BuyEarth()
+    {
+        Money -= EarthPrice;
+        EarthInfo.Complete();
+        UpdateEarthInfo();
+        UpdateMoney();
+        WinMenu.SetActive(true);
+    }
+    public void UpdateEarthInfo()
+    {
+        if (!WinGame)
+        {
+            EarthInfo.PriceText.text = $"Price: {EarthPrice} $";
+        }
+        else
+        {
+            EarthInfo.PriceText.text = $"Sold";
+            EarthInfo.Complete();
         }
     }
 
