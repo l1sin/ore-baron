@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour
         {
             string json = File.ReadAllText($"{Application.dataPath}/save.json");
             LoadGame(json);
-        } 
+        }
         DontDestroyOnLoad(gameObject);
         CalculatePrice();
         SetPremium(false);

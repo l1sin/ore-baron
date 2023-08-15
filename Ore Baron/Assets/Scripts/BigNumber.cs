@@ -136,25 +136,25 @@ public struct BigNumber: IEquatable<BigNumber>, IComparable<BigNumber>
     }
     public static BigNumber operator -(BigNumber a, BigNumber b)
     {
-        BigNumber n = new BigNumber(new int[10]);
+        BigNumber temp = new BigNumber(new int[10]);
 
-        for (int i = 0; i < n.N.Length; i++)
+        for (int i = 0; i < temp.N.Length; i++)
         {
-            if (a[i] >= b[i]) n[i] = a[i] - b[i];
+            if (a[i] >= b[i]) temp[i] = a[i] - b[i];
             else
             {
-                if (i != n.N.Length - 1)
+                if (i != temp.N.Length - 1)
                 {
-                    n[i] = 1000 + a[1] - b[1];
+                    temp[i] = 1000 + a[i] - b[i];
                     a[i + 1]--;
                 }
                 else a[i] = 0;
             }
         }
 
-        n.Count();
+        temp.Count();
 
-        return n;
+        return temp;
     }
     public static BigNumber operator *(int a, BigNumber b)
     {
