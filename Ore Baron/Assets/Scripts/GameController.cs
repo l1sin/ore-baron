@@ -86,10 +86,10 @@ public class GameController : MonoBehaviour
         SetAd(false);
         UpdateAllOres();
         SetAllMinePrices();
+        SetAllMineIncome();
         SetAllMineUpgradePrices();
         UpdateAllMines();
         UpdateAllMineUpgrades();
-        SetAllMineIncome();
         UpdateMoney();
         UpdateEarthInfo();
         UnlockOnLoad();
@@ -469,6 +469,7 @@ public class GameController : MonoBehaviour
         EarthInfo.Complete();
         UpdateEarthInfo();
         UpdateMoney();
+        WinGame = true;
         WinMenu.SetActive(true);
     }
     public void UpdateEarthInfo()
@@ -505,13 +506,13 @@ public class GameController : MonoBehaviour
     {
         SaveFile save = JsonUtility.FromJson<SaveFile>(json);
 
-        //Money = save.Money;
-        //Ores = save.Ores;
-        //Mines = save.Mines;
-        //PremiumDoubleMine = save.PremiumDoubleMine;
-        //PremiumDoubleClick = save.PremiumDoubleClick;
-        //Payed = save.Payed;
-        //WinGame = save.WinGame;
+        Money = save.Money;
+        Ores = save.Ores;
+        Mines = save.Mines;
+        PremiumDoubleMine = save.PremiumDoubleMine;
+        PremiumDoubleClick = save.PremiumDoubleClick;
+        Payed = save.Payed;
+        WinGame = save.WinGame;
     }
 
 
