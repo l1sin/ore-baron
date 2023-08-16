@@ -98,10 +98,6 @@ public class GameController : MonoBehaviour
         UpdateEarthInfo();
         UnlockOnLoad();
         _tickTimer = _tickTime;
-
-        Localization en = new Localization();
-        string locjson = JsonUtility.ToJson(en);
-        File.WriteAllText($"{Application.dataPath}/loctemplate.json", locjson);
     }
 
     public void Update()
