@@ -6385,7 +6385,7 @@ MonoBehaviour:
     DoubleClick: 
     Continue: 
     YouWin: 
-  lang: 0
+  lang: ru
 --- !u!4 &705032694
 Transform:
   m_ObjectHideFlags: 0
