@@ -138,10 +138,10 @@ public class GameController : MonoBehaviour
 
     public void LoadLocalization()
     {
-        string language = "";
-        if (language == "") language = lang;
-        TextAsset json = Resources.Load<TextAsset>($"Localization/{language}");
-        Localization = JsonUtility.FromJson<Localization>(json.text);
+        string language = Yandex.Instance.Lang;
+        TextAsset ta = Resources.Load<TextAsset>($"Localization/{language}");
+        if (ta == null) ta = Resources.Load<TextAsset>($"Localization/{lang}");
+        Localization = JsonUtility.FromJson<Localization>(ta.text);
     }
 
     public IEnumerator DropMineAd()
