@@ -3766,6 +3766,7 @@ GameObject:
   - component: {fileID: 403388577}
   - component: {fileID: 403388576}
   - component: {fileID: 403388579}
+  - component: {fileID: 403388580}
   m_Layer: 5
   m_Name: AdMineButton
   m_TagString: Untagged
@@ -3838,10 +3839,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 705032693}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: ToggleMineAdBonus
-        m_Mode: 6
+      - m_Target: {fileID: 33534845}
+        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
+        m_MethodName: ClickSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3850,9 +3851,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 33534845}
-        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
-        m_MethodName: ClickSound
+      - m_Target: {fileID: 403388580}
+        m_TargetAssemblyTypeName: YandexButtons, Assembly-CSharp
+        m_MethodName: WatchAdMine
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3910,6 +3911,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86abf6f065ee587488340bc5061f1c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &403388580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403388574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2574cd30ecde754aa7db4f5670b0e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &411132225
@@ -6593,8 +6606,6 @@ MonoBehaviour:
     N: 
   WinMenu: {fileID: 343972771}
   WinGame: 0
-  Load: 0
-  Save: 0
   Localization:
     OreNames:
     - 
@@ -11267,6 +11278,7 @@ GameObject:
   - component: {fileID: 1351876846}
   - component: {fileID: 1351876845}
   - component: {fileID: 1351876848}
+  - component: {fileID: 1351876849}
   m_Layer: 5
   m_Name: AdClickButton
   m_TagString: Untagged
@@ -11339,10 +11351,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 705032693}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: ToggleClickAdBonus
-        m_Mode: 6
+      - m_Target: {fileID: 33534845}
+        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
+        m_MethodName: ClickSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11351,9 +11363,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 33534845}
-        m_TargetAssemblyTypeName: ButtonSound, Assembly-CSharp
-        m_MethodName: ClickSound
+      - m_Target: {fileID: 1351876849}
+        m_TargetAssemblyTypeName: YandexButtons, Assembly-CSharp
+        m_MethodName: WatchAdClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11411,6 +11423,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86abf6f065ee587488340bc5061f1c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1351876849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351876843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2574cd30ecde754aa7db4f5670b0e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1356109149 stripped

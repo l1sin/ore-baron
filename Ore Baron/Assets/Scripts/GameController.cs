@@ -26,6 +26,9 @@ public class GameController : MonoBehaviour
     private float _tickTimer;
     private float _tickTime = 1f;
 
+    private float _saveTimer;
+    private float _saveTime = 10f;
+
     public static GameController Instance;
 
     // Premium.
@@ -81,9 +84,6 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         LoadGame();
         LoadLocalization();
-
-        //Yandex.DebugJS("Init Successful!");
-
         CalculatePrice();
         SetPremium(false);
         SetAd(false);
@@ -98,17 +98,26 @@ public class GameController : MonoBehaviour
         UnlockOnLoad();
         StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
+        _saveTimer = _saveTime;
         Yandex.FullScreenAd();
     }
 
     public void Update()
     {
+        _saveTimer -= Time.deltaTime;
+        if (_saveTimer <= 0)
+        {
+            SaveGame();
+            _saveTimer = _saveTime;
+        }
+
         _tickTimer -= Time.deltaTime;
         if (_tickTimer <= 0)
         {
             Tick();
             _tickTimer = _tickTime;
         }
+
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -154,12 +163,12 @@ public class GameController : MonoBehaviour
     public IEnumerator DropMineAd()
     {
         yield return new WaitForSeconds(MineAdTime);
-        ToggleMineAdBonus(false);
+        ToggleMineAdBonus(0);
     }
     public IEnumerator DropClickAd()
     {
         yield return new WaitForSeconds(ClickAdTime);
-        ToggleClickAdBonus(false);
+        ToggleClickAdBonus(0);
     }
 
     public void BuyPremiumMine()
@@ -177,9 +186,9 @@ public class GameController : MonoBehaviour
         SaveGame();
     }
 
-    public void ToggleMineAdBonus(bool state)
+    public void ToggleMineAdBonus(int state)
     {
-        if (state)
+        if (state == 1)
         {
             AdDoubleMine = true;
             SetAd(true);
@@ -193,9 +202,9 @@ public class GameController : MonoBehaviour
             MineAdButton.interactable = true;
         }
     }
-    public void ToggleClickAdBonus(bool state)
+    public void ToggleClickAdBonus(int state)
     {
-        if (state)
+        if (state == 1)
         {
             AdDoubleClick = true;
             SetAd(true);
@@ -278,7 +287,6 @@ public class GameController : MonoBehaviour
         {
             AddOre(i, new BigNumber(0, Mines[i].MinesIncome * Mines[i].MinesAmount));
         }
-        SaveGame();
     }
 
     public void UpdateAllMines()
@@ -519,7 +527,6 @@ public class GameController : MonoBehaviour
         string json = JsonUtility.ToJson(save);
 
         Yandex.SaveExtern(json);
-        Yandex.DebugJS("Game saved");
     }
 
     public void LoadGame()
@@ -533,8 +540,6 @@ public class GameController : MonoBehaviour
         PremiumDoubleClick = save.PremiumDoubleClick;
         Payed = save.Payed;
         WinGame = save.WinGame;
-
-        Yandex.DebugJS("Game loaded");
     }
 
 

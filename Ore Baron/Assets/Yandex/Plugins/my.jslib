@@ -28,11 +28,43 @@ mergeInto(LibraryManager.library, {
   },
 
   WatchAdMine: function () {
-
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log('Video ad open.');
+        },
+        onRewarded: () => {
+          myGameInstance.SendMessage('GameController', 'ToggleMineAdBonus', 1);
+          console.log('Rewarded: Mine');
+        },
+        onClose: () => {
+          console.log('Video ad closed.');
+        }, 
+        onError: (e) => {
+          console.log('Error while open video ad:', e);
+        }
+      }
+    })
   },
 
   WatchAdClick: function () {
-
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log('Video ad open.');
+        },
+        onRewarded: () => {
+          myGameInstance.SendMessage('GameController', 'ToggleClickAdBonus', 1);
+          console.log('Rewarded: Click');
+        },
+        onClose: () => {
+          console.log('Video ad closed.');
+        }, 
+        onError: (e) => {
+          console.log('Error while open video ad:', e);
+        }
+      }
+    })
   },
 
   BuyMine: function () {

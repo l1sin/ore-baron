@@ -84,7 +84,6 @@ public class Yandex : MonoBehaviour
     {
         string emptySave = Resources.Load<TextAsset>("save").text;
         Save = JsonUtility.FromJson<SaveFile>(emptySave);
-        DebugJS($"New SaveFile created");
     }
 
     public void ApplySave(string json)
