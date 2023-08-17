@@ -23,7 +23,6 @@ mergeInto(LibraryManager.library, {
         })
       } else {
         console.log(reason);
-        auth().then(() =>{Rate()});
       }
     })
   },
@@ -68,14 +67,6 @@ mergeInto(LibraryManager.library, {
     })
   },
 
-  BuyMine: function () {
-
-  },
-
-  BuyClick: function () {
-
-  },
-
   SaveExtern: function (data) {
     if (player.getMode() === 'lite')
     {
@@ -116,5 +107,13 @@ mergeInto(LibraryManager.library, {
       }
     })
   },
+
+  CallRate: function()
+  {
+    if(ysdk.feedback.canReview())
+    {
+      myGameInstance.SendMessage("GameController", "ShowRateWindow");
+    }
+  }
 
 });

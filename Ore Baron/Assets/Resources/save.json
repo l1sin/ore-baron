@@ -517,8 +517,6 @@
 			"MinesAmount": 0
 		}
 	],
-	"PremiumDoubleMine": false,
-	"PremiumDoubleClick": false,
-	"Payed": false,
-	"WinGame": false
+	"WinGame": false,
+	"Init": true
 }

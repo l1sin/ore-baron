@@ -16,14 +16,4 @@ public class YandexButtons : MonoBehaviour
     {
         Yandex.WatchAdClick();
     }
-
-    public void BuyMine()
-    {
-        Yandex.BuyMine();
-    }
-
-    public void BuyClick()
-    {
-        Yandex.BuyClick();
-    }
 }

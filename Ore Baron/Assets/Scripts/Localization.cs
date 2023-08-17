@@ -20,8 +20,6 @@ public class Localization
     public string Locked;
     public string Earth;
     public string BuyThis;
-    public string DoubleMineSpeed;
-    public string DoubleClick;
     public string Continue;
     public string YouWin;
     public string Yes;

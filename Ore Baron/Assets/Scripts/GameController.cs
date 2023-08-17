@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +15,6 @@ public class GameController : MonoBehaviour
     public List<OreInfo> OreInfos;
     public List<MineInfo> MineInfos;
     public List<MineUpgradeInfo> MineUpgradeInfos;
-    public GameObject OreInfoPrefab;
-    public GameObject OreMenuContent;
     public List<Sprite> OreSprites;
 
     // Mines.
@@ -27,17 +24,9 @@ public class GameController : MonoBehaviour
     private float _tickTime = 1f;
 
     private float _saveTimer;
-    private float _saveTime = 10f;
+    public float SaveTime = 10f;
 
     public static GameController Instance;
-
-    // Premium.
-    public bool PremiumDoubleMine;
-    public bool PremiumDoubleClick;
-    public bool Payed;
-
-    public int PremiumMineBonus;
-    public int PremiumClickBonus;
 
     // Ads.
     public bool AdDoubleMine;
@@ -53,12 +42,6 @@ public class GameController : MonoBehaviour
     // Other.
     public Button MineAdButton;
     public Button ClickAdButton;
-
-    public GameObject PremiumMineButtonObject;
-    public GameObject PremiumClickButtonObject;
-
-    public GameObject PremiumMineCompletedIcon;
-    public GameObject PremiumClickCompletedIcon;
 
     public EarthInfo EarthInfo;
     public BigNumber EarthPrice;
@@ -85,7 +68,6 @@ public class GameController : MonoBehaviour
         LoadGame();
         LoadLocalization();
         CalculatePrice();
-        SetPremium(false);
         SetAd(false);
         UpdateAllOres();
         SetAllMinePrices();
@@ -98,7 +80,7 @@ public class GameController : MonoBehaviour
         UnlockOnLoad();
         StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
-        _saveTimer = _saveTime;
+        _saveTimer = SaveTime;
         Yandex.FullScreenAd();
     }
 
@@ -108,7 +90,7 @@ public class GameController : MonoBehaviour
         if (_saveTimer <= 0)
         {
             SaveGame();
-            _saveTimer = _saveTime;
+            _saveTimer = SaveTime;
         }
 
         _tickTimer -= Time.deltaTime;
@@ -117,38 +99,15 @@ public class GameController : MonoBehaviour
             Tick();
             _tickTimer = _tickTime;
         }
-
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (PremiumDoubleMine) PremiumDoubleMine = false;
-            else PremiumDoubleMine = true;
-            SetPremium(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (PremiumDoubleClick) PremiumDoubleClick = false;
-            else PremiumDoubleClick = true;
-            SetPremium(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (AdDoubleMine) AdDoubleMine = false;
-            else AdDoubleMine = true;
-            SetAd(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            if (AdDoubleClick) AdDoubleClick = false;
-            else AdDoubleClick = true;
-            SetAd(true);
-        }
-#endif
     }
 
     public IEnumerator RateDelay()
     {
         yield return new WaitForSeconds(RateTime);
+        Yandex.CallRate();
+    }
+    public void ShowRateWindow()
+    {
         RateWindow.SetActive(true);
     }
     public void LoadLocalization()
@@ -169,21 +128,6 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(ClickAdTime);
         ToggleClickAdBonus(0);
-    }
-
-    public void BuyPremiumMine()
-    {
-        PremiumDoubleMine = true;
-        Payed = true;
-        SetPremium(true);
-        SaveGame();
-    }
-    public void BuyPremiumClick()
-    {
-        PremiumDoubleClick = true;
-        Payed = true;
-        SetPremium(true);
-        SaveGame();
     }
 
     public void ToggleMineAdBonus(int state)
@@ -216,41 +160,6 @@ public class GameController : MonoBehaviour
             AdDoubleClick = false;
             SetAd(true);
             ClickAdButton.interactable = true;
-        }
-    }
-    public void SetPremium(bool updateValues)
-    {
-        if (PremiumDoubleMine)
-        {
-            PremiumMineBonus = 2;
-            PremiumMineButtonObject.SetActive(false);
-            PremiumMineCompletedIcon.SetActive(true);
-
-        }
-        else
-        {
-            PremiumMineBonus = 1;
-            PremiumMineButtonObject.SetActive(true);
-            PremiumMineCompletedIcon.SetActive(false);
-        }
-
-        if (PremiumDoubleClick)
-        {
-            PremiumClickBonus = 2;
-            PremiumClickButtonObject.SetActive(false);
-            PremiumClickCompletedIcon.SetActive(true);
-        }
-        else
-        {
-            PremiumClickBonus = 1;
-            PremiumClickButtonObject.SetActive(true);
-            PremiumClickCompletedIcon.SetActive(false);
-        }
-
-        if (updateValues)
-        {
-            SetAllMineIncome();
-            UpdateAllMines();
         }
     }
     public void SetAd(bool updateValues)
@@ -300,7 +209,7 @@ public class GameController : MonoBehaviour
     {
         MineInfos[i].AmountText.text = $"{Localization.Amount}: {Mines[i].MinesAmount} {Localization.Pcs}";
         MineInfos[i].PriceText.text = $"{Localization.Price}: {Mines[i].CurrentMinesPrice} $/{Localization.Pcs} ";
-        MineInfos[i].IncomeTotal.text = $"{Localization.Mining}: {Mines[i].MinesIncome * Mines[i].MinesAmount} /{Localization.Sec} ";
+        MineInfos[i].IncomeTotal.text = $"{Localization.Mining}: {Mines[i].MinesIncome * Mines[i].MinesAmount} {Localization.Pcs}/{Localization.Sec} ";
         if (Mines[i].MinesAmount >= 25)
         {
             MineInfos[i].Complete();
@@ -432,7 +341,7 @@ public class GameController : MonoBehaviour
 
     public void SetMineIncome(int oreIndex)
     {
-        Mines[oreIndex].MinesIncome = (MineType.BaseIncome + MineType.BaseIncome * Mines[oreIndex].MinesUpgrades) * PremiumMineBonus * AdMineBonus;
+        Mines[oreIndex].MinesIncome = (MineType.BaseIncome + MineType.BaseIncome * Mines[oreIndex].MinesUpgrades) * AdMineBonus;
     }
     public void SetAllMineIncome()
     {
@@ -519,9 +428,6 @@ public class GameController : MonoBehaviour
         save.Money = Money;
         save.Ores = Ores;
         save.Mines = Mines;
-        save.PremiumDoubleMine = PremiumDoubleMine;
-        save.PremiumDoubleClick = PremiumDoubleClick;
-        save.Payed = Payed;
         save.WinGame = WinGame;
 
         string json = JsonUtility.ToJson(save);
@@ -536,9 +442,6 @@ public class GameController : MonoBehaviour
         Money = save.Money;
         Ores = save.Ores;
         Mines = save.Mines;
-        PremiumDoubleMine = save.PremiumDoubleMine;
-        PremiumDoubleClick = save.PremiumDoubleClick;
-        Payed = save.Payed;
         WinGame = save.WinGame;
     }
 

@@ -25,12 +25,6 @@ public class Yandex : MonoBehaviour
     public static extern void WatchAdClick();
 
     [DllImport("__Internal")]
-    public static extern void BuyMine();
-
-    [DllImport("__Internal")]
-    public static extern void BuyClick();
-
-    [DllImport("__Internal")]
     public static extern void SaveExtern(string data);
 
     [DllImport("__Internal")]
@@ -38,6 +32,10 @@ public class Yandex : MonoBehaviour
 
     [DllImport("__Internal")]
     public static extern void FullScreenAd();
+
+    [DllImport("__Internal")]
+    public static extern void CallRate();
+
 
     private void Awake()
     {
@@ -50,9 +48,6 @@ public class Yandex : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
-#if UNITY_EDITOR
-        EditorInit();
-#endif
     }
 
     public void StartInit()
@@ -71,13 +66,6 @@ public class Yandex : MonoBehaviour
     {
         LoadExtern();
         if (!Save.Init) CreateSave();
-    }
-
-    public void EditorInit()
-    {
-        Lang = "en";
-        CreateSave();
-        SceneManager.LoadScene(1);
     }
 
     public void CreateSave()
