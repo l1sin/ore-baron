@@ -1,4 +1,106 @@
 {
+	"Mines": [
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		},
+		{
+			"MinesAmount": 0,
+			"MinesUpgrades": 0
+		}
+	],
 	"Money": {
 		"N": [
 			0,
@@ -415,111 +517,8 @@
 			}
 		}
 	],
-	"Mines": [
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		},
-		{
-			"MinesUpgrades": 0,
-			"MinesAmount": 0
-		}
-	],
-	"PremiumDoubleMine": false,
-	"PremiumDoubleClick": false,
 	"Payed": false,
-	"WinGame": false,
-	"Init": true;
+	"PremiumDoubleClick": false,
+	"PremiumDoubleMine": false,
+	"WinGame": false
 }

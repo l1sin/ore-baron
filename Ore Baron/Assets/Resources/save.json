@@ -520,6 +520,5 @@
 	"PremiumDoubleMine": false,
 	"PremiumDoubleClick": false,
 	"Payed": false,
-	"WinGame": false,
-	"Init": true;
+	"WinGame": false
 }

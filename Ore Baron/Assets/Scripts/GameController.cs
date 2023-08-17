@@ -62,9 +62,6 @@ public class GameController : MonoBehaviour
     public GameObject WinMenu;
     public bool WinGame;
 
-    public bool Load;
-    public bool Save;
-
     public Localization Localization;
     public string lang = "ru";
 
@@ -81,13 +78,12 @@ public class GameController : MonoBehaviour
         {
             Instance = this;
         }
-        if (File.Exists($"{Application.dataPath}/save.json") && Load)
-        {
-            string json = File.ReadAllText($"{Application.dataPath}/save.json");
-            LoadGame(json);
-        }
         DontDestroyOnLoad(gameObject);
+        LoadGame();
         LoadLocalization();
+
+        //Yandex.DebugJS("Init Successful!");
+
         CalculatePrice();
         SetPremium(false);
         SetAd(false);
@@ -281,7 +277,7 @@ public class GameController : MonoBehaviour
         {
             AddOre(i, new BigNumber(0, Mines[i].MinesIncome * Mines[i].MinesAmount));
         }
-        if (Save) SaveGame();
+        SaveGame();
     }
 
     public void UpdateAllMines()
@@ -508,7 +504,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public string SaveGame()
+    public void SaveGame()
     {
         SaveFile save = new SaveFile();
         save.Money = Money;
@@ -520,14 +516,14 @@ public class GameController : MonoBehaviour
         save.WinGame = WinGame;
 
         string json = JsonUtility.ToJson(save);
-        File.WriteAllText($"{Application.dataPath}/save.json", json);
 
-        return json;
+        Yandex.SaveExtern(json);
+        Yandex.DebugJS("Game saved");
     }
 
-    public void LoadGame(string json)
+    public void LoadGame()
     {
-        SaveFile save = JsonUtility.FromJson<SaveFile>(json);
+        SaveFile save = Yandex.Instance.Save;
 
         Money = save.Money;
         Ores = save.Ores;
@@ -536,6 +532,8 @@ public class GameController : MonoBehaviour
         PremiumDoubleClick = save.PremiumDoubleClick;
         Payed = save.Payed;
         WinGame = save.WinGame;
+
+        Yandex.DebugJS("Game loaded");
     }
 
 
@@ -578,5 +576,7 @@ public class GameController : MonoBehaviour
 
         // Other.
         public bool WinGame;
+
+        public bool Init;
     }
 }

@@ -1,15 +1,16 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameController;
 
 public class Yandex : MonoBehaviour
 {
     public static Yandex Instance;
     public string Lang;
-    public GameController.SaveFile Save;
+    public SaveFile Save;
 
     [DllImport("__Internal")]
-    private static extern string GetLanguage();
+    public static extern string GetLanguage();
 
     [DllImport("__Internal")]
     public static extern void DebugJS(string message);
@@ -29,6 +30,12 @@ public class Yandex : MonoBehaviour
     [DllImport("__Internal")]
     public static extern void BuyClick();
 
+    [DllImport("__Internal")]
+    public static extern void SaveExtern(string data);
+
+    [DllImport("__Internal")]
+    public static extern void LoadExtern();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -40,6 +47,9 @@ public class Yandex : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+#if UNITY_EDITOR
+        EditorInit();
+#endif
     }
 
     public void StartInit()
@@ -56,6 +66,26 @@ public class Yandex : MonoBehaviour
 
     public void SetSave()
     {
+        LoadExtern();
+        if (!Save.Init) CreateSave();
+    }
 
-    } 
+    public void EditorInit()
+    {
+        Lang = "en";
+        CreateSave();
+        SceneManager.LoadScene(1);
+    }
+
+    public void CreateSave()
+    {
+        string emptySave = Resources.Load<TextAsset>("save").text;
+        Save = JsonUtility.FromJson<SaveFile>(emptySave);
+        DebugJS($"New SaveFile created");
+    }
+
+    public void ApplySave(string json)
+    {
+        Save = JsonUtility.FromJson<SaveFile>(json);
+    }
 }
