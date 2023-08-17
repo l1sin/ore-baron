@@ -12,4 +12,34 @@ mergeInto(LibraryManager.library, {
     console.log(UTF8ToString(message));
   },
 
+  Rate: function () {
+    ysdk.feedback.canReview()
+    .then(({ value, reason }) => {
+      if (value) {
+        ysdk.feedback.requestReview()
+        .then(({ feedbackSent }) => {
+          console.log(feedbackSent);
+        })
+      } else {
+        console.log(reason)
+      }
+    })
+  },
+
+  WatchAdMine: function () {
+
+  },
+
+  WatchAdClick: function () {
+
+  },
+
+  BuyMine: function () {
+
+  },
+
+  BuyClick: function () {
+
+  },
+
 });

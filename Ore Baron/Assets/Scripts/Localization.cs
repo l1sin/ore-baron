@@ -24,4 +24,8 @@ public class Localization
     public string DoubleClick;
     public string Continue;
     public string YouWin;
+    public string Yes;
+    public string No;
+    public string DoYouLikeTheGame;
+    public string PleaseRate;
 }

@@ -97,5 +97,9 @@
 	"DoubleMineSpeed": "Double Mine Speed",
 	"DoubleClick": "Double Click",
 	"Continue": "Continue",
-	"YouWin": "You Win!"
+	"YouWin": "You Win!",
+	"Yes": "Yes",
+	"No": "No",
+	"DoYouLikeTheGame": "Do you like the game?",
+	"PleaseRate": "Please, rate!"
 }

@@ -68,6 +68,9 @@ public class GameController : MonoBehaviour
     public Localization Localization;
     public string lang = "ru";
 
+    public GameObject RateWindow;
+    public float RateTime = 300f;
+
     private void Start()
     {
         if (Instance != null && Instance != this)
@@ -97,6 +100,7 @@ public class GameController : MonoBehaviour
         UpdateMoney();
         UpdateEarthInfo();
         UnlockOnLoad();
+        StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
     }
 
@@ -136,9 +140,15 @@ public class GameController : MonoBehaviour
 #endif
     }
 
+    public IEnumerator RateDelay()
+    {
+        yield return new WaitForSeconds(RateTime);
+        RateWindow.SetActive(true);
+    }
     public void LoadLocalization()
     {
-        string language = Yandex.Instance.Lang;
+        string language = "";
+        if (Yandex.Instance != null) language = Yandex.Instance.Lang;
         TextAsset ta = Resources.Load<TextAsset>($"Localization/{language}");
         if (ta == null) ta = Resources.Load<TextAsset>($"Localization/{lang}");
         Localization = JsonUtility.FromJson<Localization>(ta.text);

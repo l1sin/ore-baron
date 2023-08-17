@@ -97,5 +97,9 @@
 	"DoubleMineSpeed": "Çift madencilik hızı",
 	"DoubleClick": "Çift tıklama",
 	"Continue": "Devam",
-	"YouWin": "Zafer!!"
+	"YouWin": "Zafer!",
+	"Yes": "Evet",
+	"No": "Hayir",
+	"DoYouLikeTheGame": "Oyunu beğendin mi?",
+	"PleaseRate": "Lütfen oyla!"
 }

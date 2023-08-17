@@ -14,6 +14,21 @@ public class Yandex : MonoBehaviour
     [DllImport("__Internal")]
     public static extern void DebugJS(string message);
 
+    [DllImport("__Internal")]
+    public static extern void Rate();
+
+    [DllImport("__Internal")]
+    public static extern void WatchAdMine();
+
+    [DllImport("__Internal")]
+    public static extern void WatchAdClick();
+
+    [DllImport("__Internal")]
+    public static extern void BuyMine();
+
+    [DllImport("__Internal")]
+    public static extern void BuyClick();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -42,5 +57,5 @@ public class Yandex : MonoBehaviour
     public void SetSave()
     {
 
-    }
+    } 
 }

@@ -97,5 +97,9 @@
 	"DoubleMineSpeed": "Двойная скорость добычи",
 	"DoubleClick": "Двойной клик",
 	"Continue": "Продолжить",
-	"YouWin": "Победа!"
+	"YouWin": "Победа!",
+	"Yes": "Да",
+	"No": "Нет",
+	"DoYouLikeTheGame": "Нравится игра?",
+	"PleaseRate": "Оцени, пожалуйста!"
 }
