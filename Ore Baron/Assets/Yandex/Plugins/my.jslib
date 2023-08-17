@@ -13,17 +13,11 @@ mergeInto(LibraryManager.library, {
     console.log(UTF8ToString(message));
   },
 
-  Rate: function () {
-    ysdk.feedback.canReview()
-    .then(({ value, reason }) => {
-      if (value) {
-        ysdk.feedback.requestReview()
-        .then(({ feedbackSent }) => {
-          console.log(feedbackSent);
-        })
-      } else {
-        console.log(reason);
-      }
+  Rate: function () 
+  {
+    ysdk.feedback.requestReview()
+    .then(({ feedbackSent }) => {
+      console.log(feedbackSent);
     })
   },
 
@@ -110,10 +104,16 @@ mergeInto(LibraryManager.library, {
 
   CallRate: function()
   {
-    if(ysdk.feedback.canReview())
-    {
-      myGameInstance.SendMessage("GameController", "ShowRateWindow");
-    }
+    ysdk.feedback.canReview()
+    .then(({ value, reason }) => {
+      if (value) 
+      {
+        myGameInstance.SendMessage("GameController", "ShowRateWindow");
+      } 
+      else 
+      {
+        console.log(reason)
+      }
+    })
   }
-
 });
