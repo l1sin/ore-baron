@@ -36,6 +36,9 @@ public class Yandex : MonoBehaviour
     [DllImport("__Internal")]
     public static extern void LoadExtern();
 
+    [DllImport("__Internal")]
+    public static extern void FullScreenAd();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

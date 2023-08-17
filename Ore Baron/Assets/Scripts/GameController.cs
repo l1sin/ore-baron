@@ -98,6 +98,7 @@ public class GameController : MonoBehaviour
         UnlockOnLoad();
         StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
+        Yandex.FullScreenAd();
     }
 
     public void Update()
