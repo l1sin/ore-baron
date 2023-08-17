@@ -22,7 +22,8 @@ mergeInto(LibraryManager.library, {
           console.log(feedbackSent);
         })
       } else {
-        console.log(reason)
+        console.log(reason);
+        auth().then(() =>{Rate()});
       }
     })
   },
@@ -76,17 +77,31 @@ mergeInto(LibraryManager.library, {
   },
 
   SaveExtern: function (data) {
-    var dataString = UTF8ToString(data);
-    var myobj = JSON.parse(dataString);
-    player.setData(myobj, true);
-    console.log("SaveExtern");
+    if (player.getMode() === 'lite')
+    {
+
+    }
+    else
+    {
+      var dataString = UTF8ToString(data);
+      var myobj = JSON.parse(dataString);
+      player.setData(myobj, true);
+      console.log("SaveExtern");
+    }
   },
 
   LoadExtern: function () {
-    player.getData().then(_data => {
-      const myJSON = JSON.stringify(_data);
-      myGameInstance.SendMessage('Yandex', 'ApplySave', myJSON);
-    });
+    if (player.getMode() === 'lite')
+    {
+      myGameInstance.SendMessage('Yandex', 'ApplySave', '');
+    }
+    else
+    {
+      player.getData().then(_data => {
+        const myJSON = JSON.stringify(_data);
+        myGameInstance.SendMessage('Yandex', 'ApplySave', myJSON);
+      });
+    }
   },
 
   FullScreenAd: function () {
