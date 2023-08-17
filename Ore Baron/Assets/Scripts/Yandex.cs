@@ -9,9 +9,12 @@ public class Yandex : MonoBehaviour
     public GameController.SaveFile Save;
 
     [DllImport("__Internal")]
-    private static extern string SetLanguage();
+    private static extern string GetLanguage();
 
-    private void Start()
+    [DllImport("__Internal")]
+    public static extern void DebugJS(string message);
+
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -26,7 +29,18 @@ public class Yandex : MonoBehaviour
 
     public void StartInit()
     {
-        Lang = SetLanguage();
+        SetLanguage();
+        SetSave();
         SceneManager.LoadScene(1);
+    }
+
+    public void SetLanguage()
+    {
+        Lang = GetLanguage();
+    }
+
+    public void SetSave()
+    {
+
     }
 }
