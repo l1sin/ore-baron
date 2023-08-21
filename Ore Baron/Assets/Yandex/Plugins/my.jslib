@@ -64,25 +64,26 @@ mergeInto(LibraryManager.library, {
   SaveExtern: function (data) {
     if (player.getMode() === 'lite')
     {
-
+      console.log("Saving. No auth. No cloud save, only local.");
     }
     else
     {
       var dataString = UTF8ToString(data);
       var myobj = JSON.parse(dataString);
       player.setData(myobj, true);
-      console.log("SaveExtern");
+      console.log("Saving. Auth. Save to cloud.");
     }
   },
 
   LoadExtern: function () {
     if (player.getMode() === 'lite')
     {
-      myGameInstance.SendMessage('Yandex', 'ApplySave', '');
+      console.log("Loading. No auth. Use local save.");
     }
     else
     {
       player.getData().then(_data => {
+        console.log("Loading. Auth. Use cloud save.");
         const myJSON = JSON.stringify(_data);
         myGameInstance.SendMessage('Yandex', 'ApplySave', myJSON);
       });

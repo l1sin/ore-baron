@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -446,8 +447,10 @@ public class GameController : MonoBehaviour
         save.WinGame = WinGame;
 
         string json = JsonUtility.ToJson(save);
+        File.WriteAllText($"{Application.persistentDataPath}/save.json", json);
+        Debug.Log("LocalSave");
 #if UNITY_EDITOR
-        Debug.Log("SaveExtern");
+
 #elif UNITY_WEBGL
         Yandex.SaveExtern(json);
 #endif

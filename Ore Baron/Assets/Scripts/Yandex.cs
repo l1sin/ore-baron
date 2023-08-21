@@ -1,3 +1,4 @@
+using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,8 +68,24 @@ public class Yandex : MonoBehaviour
 
     public void SetSave()
     {
+        LoadLocal();
         LoadExtern();
         if (!Save.Init) CreateSave();
+    }
+
+    public void LoadLocal()
+    {
+        if (File.Exists($"{Application.persistentDataPath}/save.json"))
+        {
+            string json = File.ReadAllText($"{Application.persistentDataPath}/save.json");
+            ApplySave(json);
+            Debug.Log("Local save loaded");
+        }
+        else
+        {
+            CreateSave();
+            Debug.Log("Local save not found. Savefile created");
+        }
     }
 
     public void CreateSave()
@@ -85,7 +102,7 @@ public class Yandex : MonoBehaviour
     public void EditorInit()
     {
         Lang = "en";
-        CreateSave();
+        LoadLocal();
         SceneManager.LoadScene(1);
     }
 }
