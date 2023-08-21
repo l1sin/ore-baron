@@ -447,7 +447,8 @@ public class GameController : MonoBehaviour
         save.WinGame = WinGame;
 
         string json = JsonUtility.ToJson(save);
-        File.WriteAllText($"{Application.persistentDataPath}/save.json", json);
+        PlayerPrefs.SetString("save", json);
+        PlayerPrefs.Save();
         Debug.Log("LocalSave");
 #if UNITY_EDITOR
 

@@ -75,9 +75,10 @@ public class Yandex : MonoBehaviour
 
     public void LoadLocal()
     {
-        if (File.Exists($"{Application.persistentDataPath}/save.json"))
+        string json = PlayerPrefs.GetString("save");
+        Debug.Log(json);
+        if (!string.IsNullOrEmpty(json))
         {
-            string json = File.ReadAllText($"{Application.persistentDataPath}/save.json");
             ApplySave(json);
             Debug.Log("Local save loaded");
         }
