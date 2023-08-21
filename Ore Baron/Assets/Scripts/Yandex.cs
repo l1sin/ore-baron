@@ -9,6 +9,7 @@ public class Yandex : MonoBehaviour
     public static Yandex Instance;
     public string Lang;
     public SaveFile Save;
+    public const string Path = "idbfs/OreBaronSaveDirectory";
 
     [DllImport("__Internal")]
     public static extern string GetLanguage();
@@ -57,7 +58,7 @@ public class Yandex : MonoBehaviour
     public void StartInit()
     {
         SetLanguage();
-        SetSave();
+        LoadExtern();
         SceneManager.LoadScene(1);
     }
 
@@ -66,19 +67,12 @@ public class Yandex : MonoBehaviour
         Lang = GetLanguage();
     }
 
-    public void SetSave()
-    {
-        LoadLocal();
-        LoadExtern();
-        if (!Save.Init) CreateSave();
-    }
-
     public void LoadLocal()
     {
-        string json = PlayerPrefs.GetString("save");
-        Debug.Log(json);
-        if (!string.IsNullOrEmpty(json))
+        if (PlayerPrefs.HasKey("save"))
         {
+            string json = PlayerPrefs.GetString("save");
+            Debug.Log($"LoadedFromPlayerPrefs:\n{json}");
             ApplySave(json);
             Debug.Log("Local save loaded");
         }
@@ -87,6 +81,20 @@ public class Yandex : MonoBehaviour
             CreateSave();
             Debug.Log("Local save not found. Savefile created");
         }
+    }
+
+    public void LoadCloud(string json)
+    {
+        ApplySave(json);
+        if (Save.Init)
+        {
+            Debug.Log("CloudSave loaded successfully");
+        }
+        else
+        {
+            CreateSave();
+            Debug.Log("CloudSave was empty. Creating SaveFile");
+        } 
     }
 
     public void CreateSave()

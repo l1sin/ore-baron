@@ -500,14 +500,8 @@ public class GameController : MonoBehaviour
         // Mines.
         public List<MineType> Mines;
 
-        // Premium.
-        public bool PremiumDoubleMine;
-        public bool PremiumDoubleClick;
-        public bool Payed;
-
         // Other.
         public bool WinGame;
-
         public bool Init;
     }
 }
