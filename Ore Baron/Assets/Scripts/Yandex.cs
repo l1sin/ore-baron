@@ -48,6 +48,9 @@ public class Yandex : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+#if UNITY_EDITOR
+        EditorInit();
+#endif
     }
 
     public void StartInit()
@@ -77,5 +80,12 @@ public class Yandex : MonoBehaviour
     public void ApplySave(string json)
     {
         Save = JsonUtility.FromJson<SaveFile>(json);
+    }
+
+    public void EditorInit()
+    {
+        Lang = "en";
+        CreateSave();
+        SceneManager.LoadScene(1);
     }
 }

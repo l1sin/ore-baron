@@ -43,6 +43,9 @@ public class GameController : MonoBehaviour
     public Button MineAdButton;
     public Button ClickAdButton;
 
+    public GameObject MineAdIcon;
+    public GameObject ClickAdIcon;
+
     public EarthInfo EarthInfo;
     public BigNumber EarthPrice;
     public GameObject WinMenu;
@@ -81,7 +84,11 @@ public class GameController : MonoBehaviour
         StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
         _saveTimer = SaveTime;
+#if UNITY_EDITOR
+        Debug.Log("FullScreenAd");
+#elif UNITY_WEBGL
         Yandex.FullScreenAd();
+#endif
     }
 
     public void Update()
@@ -104,7 +111,11 @@ public class GameController : MonoBehaviour
     public IEnumerator RateDelay()
     {
         yield return new WaitForSeconds(RateTime);
+#if UNITY_EDITOR
+        Debug.Log("CallRate");
+#elif UNITY_WEBGL
         Yandex.CallRate();
+#endif
     }
     public void ShowRateWindow()
     {
@@ -137,6 +148,7 @@ public class GameController : MonoBehaviour
             AdDoubleMine = true;
             SetAd(true);
             MineAdButton.interactable = false;
+            MineAdIcon.SetActive(false);
             StartCoroutine(DropMineAd());
         }
         else
@@ -144,6 +156,7 @@ public class GameController : MonoBehaviour
             AdDoubleMine = false;
             SetAd(true);
             MineAdButton.interactable = true;
+            MineAdIcon.SetActive(true);
         }
     }
     public void ToggleClickAdBonus(int state)
@@ -153,6 +166,7 @@ public class GameController : MonoBehaviour
             AdDoubleClick = true;
             SetAd(true);
             ClickAdButton.interactable = false;
+            ClickAdIcon.SetActive(false);
             StartCoroutine(DropClickAd());
         }
         else
@@ -160,6 +174,7 @@ public class GameController : MonoBehaviour
             AdDoubleClick = false;
             SetAd(true);
             ClickAdButton.interactable = true;
+            ClickAdIcon.SetActive(true);
         }
     }
     public void SetAd(bool updateValues)
@@ -431,8 +446,11 @@ public class GameController : MonoBehaviour
         save.WinGame = WinGame;
 
         string json = JsonUtility.ToJson(save);
-
+#if UNITY_EDITOR
+        Debug.Log("SaveExtern");
+#elif UNITY_WEBGL
         Yandex.SaveExtern(json);
+#endif
     }
 
     public void LoadGame()
