@@ -445,6 +445,7 @@ public class GameController : MonoBehaviour
         save.Ores = Ores;
         save.Mines = Mines;
         save.WinGame = WinGame;
+        save.Init = true;
 
         string json = JsonUtility.ToJson(save);
         PlayerPrefs.SetString("save", json);
