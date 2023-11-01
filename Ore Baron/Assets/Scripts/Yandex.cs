@@ -1,3 +1,4 @@
+using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ public class Yandex : MonoBehaviour
     public static Yandex Instance;
     public string Lang;
     public SaveFile Save;
+    public const string Path = "idbfs/OreBaronSaveDirectory";
 
     [DllImport("__Internal")]
     public static extern string GetLanguage();
@@ -48,12 +50,15 @@ public class Yandex : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+#if UNITY_EDITOR
+        EditorInit();
+#endif
     }
 
     public void StartInit()
     {
         SetLanguage();
-        SetSave();
+        LoadExtern();
         SceneManager.LoadScene(1);
     }
 
@@ -62,10 +67,34 @@ public class Yandex : MonoBehaviour
         Lang = GetLanguage();
     }
 
-    public void SetSave()
+    public void LoadLocal()
     {
-        LoadExtern();
-        if (!Save.Init) CreateSave();
+        if (PlayerPrefs.HasKey("save"))
+        {
+            string json = PlayerPrefs.GetString("save");
+            Debug.Log($"LoadedFromPlayerPrefs:\n{json}");
+            ApplySave(json);
+            Debug.Log("Local save loaded");
+        }
+        else
+        {
+            CreateSave();
+            Debug.Log("Local save not found. Savefile created");
+        }
+    }
+
+    public void LoadCloud(string json)
+    {
+        ApplySave(json);
+        if (Save.Init)
+        {
+            Debug.Log("CloudSave loaded successfully");
+        }
+        else
+        {
+            CreateSave();
+            Debug.Log("CloudSave was empty. Creating SaveFile");
+        } 
     }
 
     public void CreateSave()
@@ -77,5 +106,12 @@ public class Yandex : MonoBehaviour
     public void ApplySave(string json)
     {
         Save = JsonUtility.FromJson<SaveFile>(json);
+    }
+
+    public void EditorInit()
+    {
+        Lang = "en";
+        LoadLocal();
+        SceneManager.LoadScene(1);
     }
 }

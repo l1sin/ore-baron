@@ -5558,7 +5558,7 @@ GameObject:
   - component: {fileID: 647811467}
   - component: {fileID: 647811466}
   m_Layer: 5
-  m_Name: AdIcon
+  m_Name: MineAdIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5573,8 +5573,8 @@ RectTransform:
   m_GameObject: {fileID: 647811464}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 403388575}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5987,6 +5987,8 @@ MonoBehaviour:
   ClickAdTime: 60
   MineAdButton: {fileID: 403388576}
   ClickAdButton: {fileID: 1351876845}
+  MineAdIcon: {fileID: 647811464}
+  ClickAdIcon: {fileID: 1552512346}
   EarthInfo: {fileID: 4246895209619442170}
   EarthPrice:
     N: 
@@ -11275,7 +11277,7 @@ GameObject:
   - component: {fileID: 1552512349}
   - component: {fileID: 1552512348}
   m_Layer: 5
-  m_Name: AdIcon
+  m_Name: ClickAdIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11290,8 +11292,8 @@ RectTransform:
   m_GameObject: {fileID: 1552512346}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1351876844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13902,6 +13904,7 @@ GameObject:
   - component: {fileID: 1875726732}
   - component: {fileID: 1875726731}
   - component: {fileID: 1875726730}
+  - component: {fileID: 1875726734}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -13995,6 +13998,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1875726734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875726729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3bab66af2dbad4d80825a6987cacdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rect: {fileID: 1875726733}
+  scaler: {fileID: 1875726731}
 --- !u!114 &1925011366 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 558668383519245983, guid: 720bf4b88164db2488bf5b78101ae7ba, type: 3}

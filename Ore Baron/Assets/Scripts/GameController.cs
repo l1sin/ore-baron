@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,9 @@ public class GameController : MonoBehaviour
     public Button MineAdButton;
     public Button ClickAdButton;
 
+    public GameObject MineAdIcon;
+    public GameObject ClickAdIcon;
+
     public EarthInfo EarthInfo;
     public BigNumber EarthPrice;
     public GameObject WinMenu;
@@ -81,7 +85,11 @@ public class GameController : MonoBehaviour
         StartCoroutine(RateDelay());
         _tickTimer = _tickTime;
         _saveTimer = SaveTime;
+#if UNITY_EDITOR
+        Debug.Log("FullScreenAd");
+#elif UNITY_WEBGL
         Yandex.FullScreenAd();
+#endif
     }
 
     public void Update()
@@ -104,7 +112,11 @@ public class GameController : MonoBehaviour
     public IEnumerator RateDelay()
     {
         yield return new WaitForSeconds(RateTime);
+#if UNITY_EDITOR
+        Debug.Log("CallRate");
+#elif UNITY_WEBGL
         Yandex.CallRate();
+#endif
     }
     public void ShowRateWindow()
     {
@@ -137,6 +149,7 @@ public class GameController : MonoBehaviour
             AdDoubleMine = true;
             SetAd(true);
             MineAdButton.interactable = false;
+            MineAdIcon.SetActive(false);
             StartCoroutine(DropMineAd());
         }
         else
@@ -144,6 +157,7 @@ public class GameController : MonoBehaviour
             AdDoubleMine = false;
             SetAd(true);
             MineAdButton.interactable = true;
+            MineAdIcon.SetActive(true);
         }
     }
     public void ToggleClickAdBonus(int state)
@@ -153,6 +167,7 @@ public class GameController : MonoBehaviour
             AdDoubleClick = true;
             SetAd(true);
             ClickAdButton.interactable = false;
+            ClickAdIcon.SetActive(false);
             StartCoroutine(DropClickAd());
         }
         else
@@ -160,6 +175,7 @@ public class GameController : MonoBehaviour
             AdDoubleClick = false;
             SetAd(true);
             ClickAdButton.interactable = true;
+            ClickAdIcon.SetActive(true);
         }
     }
     public void SetAd(bool updateValues)
@@ -429,10 +445,17 @@ public class GameController : MonoBehaviour
         save.Ores = Ores;
         save.Mines = Mines;
         save.WinGame = WinGame;
+        save.Init = true;
 
         string json = JsonUtility.ToJson(save);
+        PlayerPrefs.SetString("save", json);
+        PlayerPrefs.Save();
+        Debug.Log("LocalSave");
+#if UNITY_EDITOR
 
+#elif UNITY_WEBGL
         Yandex.SaveExtern(json);
+#endif
     }
 
     public void LoadGame()
@@ -478,14 +501,8 @@ public class GameController : MonoBehaviour
         // Mines.
         public List<MineType> Mines;
 
-        // Premium.
-        public bool PremiumDoubleMine;
-        public bool PremiumDoubleClick;
-        public bool Payed;
-
         // Other.
         public bool WinGame;
-
         public bool Init;
     }
 }
